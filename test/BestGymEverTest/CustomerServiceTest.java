@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,7 +30,7 @@ public class CustomerServiceTest {
         tempTrainingLogFile = File.createTempFile("./traningslogg_test", ".txt");
 
         try (FileWriter writer = new FileWriter(tempCustomerFile)) {
-            writer.write("7703021234, Alhambra Aromes\n2024-07-01\n");
+            writer.write("7703021234, Alhambra Aromes\n2024-01-01\n");
             writer.write("8204021234, Bear Belle\n2019-12-02\n");
         }
 
@@ -46,9 +47,15 @@ public class CustomerServiceTest {
 
     @Test
     public void testFindCustomerByPersonalNumber() {
-        customer = customerService.findCustomer("7703021234");
+        customer = customerService.findCustomer("8204021234");
         assertNotNull(customer);
-        assertEquals("Alhambra Aromes", customer.getName());
+        assertEquals("Bear Belle", customer.getName());
+    }
+
+    @Test
+    public void testCustomerDontExist() {
+        customer = customerService.findCustomer("John Doe");
+        assertNull(customer);
     }
 
     @Test
@@ -64,6 +71,14 @@ public class CustomerServiceTest {
         MembershipStatus status = customerService.checkMembership(customer);
         assertEquals(MembershipStatus.FORMER_MEMBER, status);
     }
+
+    @Test
+    public void testCheckMembershipNonMember() {
+        Customer nonMember = new Customer("0000000000", "Obehörig Kund", LocalDate.now());
+        MembershipStatus status = customerService.checkMembership(nonMember);
+        assertEquals(MembershipStatus.NON_MEMBER, status);
+    }
+
 
     @Test
     public void testRegisterTraining() throws IOException {

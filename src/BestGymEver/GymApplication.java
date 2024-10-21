@@ -64,14 +64,18 @@ public class GymApplication {
                 case FORMER_MEMBER:
                     JOptionPane.showMessageDialog(null, customer.getName() + " är en före detta medlem. Betala årsavgiften för att återuppta medlemskapet.");
                     break;
+                case NON_MEMBER:
+                    JOptionPane.showMessageDialog(null, customer.getName() + " är obehörig och har aldrig varit medlem.");
+                    break;
             }
         } else {
             JOptionPane.showMessageDialog(null, "Personen finns inte i filen och är obehörig.");
         }
     }
 
+
     public static void main(String[] args) {
-        String customerFilePath = "src/BestGymEver/Data/kunddata.txt";
+        String customerFilePath = "src/BestGymEver/Data/customerData.txt";
         String trainingLogFilePath = "src/BestGymEver/Data/traningslogg.txt";
 
         new GymApplication(customerFilePath, trainingLogFilePath).run();

@@ -20,13 +20,19 @@ public class CustomerService {
     }
 
     public MembershipStatus checkMembership(Customer customer) {
+        if (customer == null) {
+            return MembershipStatus.NON_MEMBER;
+        }
+
+        if (!customers.contains(customer)) {
+            return MembershipStatus.NON_MEMBER;
+        }
+
         LocalDate currentDate = LocalDate.now();
         if (customer.getLastPaymentDate().isAfter(currentDate.minusYears(1))) {
             return MembershipStatus.CURRENT_MEMBER;
-        } else if (customer.getLastPaymentDate().isBefore(currentDate.minusYears(1))) {
-            return MembershipStatus.FORMER_MEMBER;
         } else {
-            return MembershipStatus.NON_MEMBER;
+            return MembershipStatus.FORMER_MEMBER;
         }
     }
 

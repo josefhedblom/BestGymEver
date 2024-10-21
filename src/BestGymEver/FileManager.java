@@ -4,6 +4,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,16 +23,29 @@ public class FileManager {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(", ");
+                if (parts.length != 2) {
+                    System.err.println("Felaktig radformat: " + line);
+                    continue;
+                }
                 String personalNumber = parts[0];
                 String name = parts[1];
-                LocalDate lastPaymentDate = LocalDate.parse(br.readLine());
-                customers.add(new Customer(personalNumber, name, lastPaymentDate));
+
+                String paymentDateLine = br.readLine();
+                if (paymentDateLine != null) {
+                    try {
+                        LocalDate lastPaymentDate = LocalDate.parse(paymentDateLine);
+                        customers.add(new Customer(personalNumber, name, lastPaymentDate));
+                    } catch (DateTimeParseException e) {
+                        System.err.println("Felaktigt datumformat: " + paymentDateLine);
+                    }
+                }
             }
         } catch (IOException e) {
             System.err.println("Fel vid läsning av kunddata: " + e.getMessage());
         }
         return customers;
     }
+
 
     public String logTrainingSession(Customer customer) {
         LocalDateTime currentTime = LocalDateTime.now();

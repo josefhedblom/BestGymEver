@@ -66,8 +66,8 @@ public class FileManagerTest {
     }
 
     @AfterEach
-    public void tearDown() {
-        tempCustomerFile.delete();
-        tempTrainingLogFile.delete();
+    public void tearDown() throws IOException  {
+        Files.deleteIfExists(tempCustomerFile.toPath());
+        Files.deleteIfExists(tempTrainingLogFile.toPath());
     }
 }
