@@ -30,8 +30,8 @@ public class CustomerServiceTest {
         tempTrainingLogFile = File.createTempFile("./traningslogg_test", ".txt");
 
         try (FileWriter writer = new FileWriter(tempCustomerFile)) {
-            writer.write("7703021234, Alhambra Aromes\n2024-01-01\n");
-            writer.write("8204021234, Bear Belle\n2019-12-02\n");
+            writer.write("7703021234, Alhambra Aromes\n" + LocalDate.now().minusMonths(6) + "\n");
+            writer.write("8204021234, Bear Belle\n" + LocalDate.now().minusYears(2) + "\n");
         }
 
         fileManager = new FileManager(tempCustomerFile.getAbsolutePath(), tempTrainingLogFile.getAbsolutePath());
